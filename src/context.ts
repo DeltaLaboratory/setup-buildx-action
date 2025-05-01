@@ -29,9 +29,10 @@ export interface Inputs {
 }
 
 export async function getInputs(): Promise<Inputs> {
+  core.debug(`name = ${core.getInput('builder-name')}`);
   return {
     version: core.getInput('version'),
-    name: core.getInput('builder-name') || await getBuilderName(core.getInput('driver') || 'docker-container'),
+    name: core.getInput('builder-name') || (await getBuilderName(core.getInput('driver') || 'docker-container')),
     driver: core.getInput('driver') || 'docker-container',
     driverOpts: Util.getInputList('driver-opts', {ignoreComma: true, quote: false}),
     buildkitdFlags: core.getInput('buildkitd-flags'),
