@@ -60,6 +60,13 @@ inputs:
     description: 'Inline BuildKit daemon config'
     deprecationMessage: 'Use buildkitd-config-inline instead'
     required: false
+  keep-state:
+    description: 'Keep state on cleanup'
+    default: 'false'
+    required: false
+  builder-name:
+    description: 'Builder name use use when creating the builder. If not specified, one will be generated. Specifying a name enables reusing a buildkit volume in persistent self-hosted runners.'
+    required: false
 
 outputs:
   name:

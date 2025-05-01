@@ -70,6 +70,7 @@ actionsToolkit.run(
 
     fs.mkdirSync(Buildx.certsDir, {recursive: true});
     stateHelper.setCertsDir(Buildx.certsDir);
+    stateHelper.setKeepState(inputs.keepState);
 
     // if the default context has TLS data loaded and endpoint is not set, then
     // we create a temporary docker context only if driver is docker-container
@@ -248,7 +249,7 @@ actionsToolkit.run(
         const buildx = new Buildx({standalone: stateHelper.standalone});
         const builder = new Builder({buildx: buildx});
         if (await builder.exists(stateHelper.builderName)) {
-          const rmCmd = await buildx.getCommand(['rm', stateHelper.builderName]);
+          const rmCmd = await buildx.getCommand(['rm', stateHelper.builderName, stateHelper.keepState ? '--keep-state' : '']);
           await Exec.getExecOutput(rmCmd.command, rmCmd.args, {
             ignoreReturnCode: true
           }).then(res => {

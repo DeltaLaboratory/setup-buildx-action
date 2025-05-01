@@ -25,12 +25,13 @@ export interface Inputs {
   append: string;
   cacheBinary: boolean;
   cleanup: boolean;
+  keepState: boolean;
 }
 
 export async function getInputs(): Promise<Inputs> {
   return {
     version: core.getInput('version'),
-    name: await getBuilderName(core.getInput('driver') || 'docker-container'),
+    name: core.getInput('name') || await getBuilderName(core.getInput('driver') || 'docker-container'),
     driver: core.getInput('driver') || 'docker-container',
     driverOpts: Util.getInputList('driver-opts', {ignoreComma: true, quote: false}),
     buildkitdFlags: core.getInput('buildkitd-flags'),
@@ -42,7 +43,8 @@ export async function getInputs(): Promise<Inputs> {
     buildkitdConfigInline: core.getInput('buildkitd-config-inline') || core.getInput('config-inline'),
     append: core.getInput('append'),
     cacheBinary: core.getBooleanInput('cache-binary'),
-    cleanup: core.getBooleanInput('cleanup')
+    cleanup: core.getBooleanInput('cleanup'),
+    keepState: core.getBooleanInput('keep-state')
   };
 }
 
